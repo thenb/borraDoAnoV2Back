@@ -37,6 +37,7 @@ app.use(function(err, req, res, next) {
   next(err);
 });
 
+
 //Inicio das Rotas
 //getId: Retorna o Id da token de instalacao
 app.post('/getId', function(req, res) {
