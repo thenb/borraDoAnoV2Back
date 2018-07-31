@@ -194,8 +194,28 @@ app.post('/replayPoll', function(req, res) {
 					connection.release();
 					return res.jsonp(error);
 				}
-				connection.release();
-				return res.jsonp("Enquete Respondida com sucesso");
+				var string_votacao = ""
+				if(req.body.resposta==1){
+					string_votacao = 'update enquete set opcao_1_qtd = opcao_1_qtd+1 where id = '+req.body.id_enquete;
+				}else if(req.body.resposta==2){
+					string_votacao = 'update enquete set opcao_2_qtd = opcao_2_qtd+1 where id = '+req.body.id_enquete;
+				}else if(req.body.resposta==3){
+					string_votacao = 'update enquete set opcao_3_qtd = opcao_3_qtd+1 where id = '+req.body.id_enquete;
+				}else if(req.body.resposta==4){
+					string_votacao = 'update enquete set opcao_4_qtd = opcao_4_qtd+1 where id = '+req.body.id_enquete;
+				}
+				console.log(string_votacao);
+				connection.query(string_votacao , function(err, data2) {
+				if (err){
+						var error = {};
+						error.type = 1;
+						error.msg = err;
+						connection.release();
+						return res.jsonp(error);
+					}
+					connection.release();
+					return res.jsonp("Enquete Respondida com sucesso");
+				});
 			});
 		});
 	});	
