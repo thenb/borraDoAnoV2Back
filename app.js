@@ -291,6 +291,25 @@ app.post('/newPoll', function(req, res) {
 	});	
 });
 
+//getAllEnquetes: Busca todas as enquetes
+app.post('/pontuarBorra', function(req, res) {	
+	pool.getConnection(function(err, connection) {	
+		var string = 'UPDATE borra SET pontos = pontos + '+req.body.qtd_pontos+' WHERE id = '+req.body.id;
+		console.log(string);
+		connection.query(string, function(err, data) {
+			if (err){
+				var error = {};
+				error.type = 1;
+				error.msg = err;
+				connection.release();
+				return res.jsonp(error);
+			}	
+			connection.release();
+			return res.jsonp(data);
+		});
+	});
+});
+
 //configuracao para o heroku
 app.listen(process.env.PORT || 5000)
 
